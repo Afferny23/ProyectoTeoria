@@ -153,6 +153,7 @@ CTexture textLibro4;
 CTexture textLibro6;
 CTexture textLibro7;
 CTexture textLibro8;
+CTexture textBarda;
 /*********************Carga de Figuras*******************/
 CFiguras figSuelo;
 CFiguras figPared;
@@ -962,6 +963,10 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	textLibro8.BuildGLTexture();
 	textLibro8.ReleaseImage();
 
+	//Barda
+	textBarda.LoadTGA("Texturas/exterior/barda.tga");
+	textBarda.BuildGLTexture();
+	textBarda.ReleaseImage();
 	objCamera.Position_Camera(0, 2.5f, 3, 0, 2.5f, 0, 0, 1, 0);
 
 	//NEW Iniciar variables de KeyFrames
@@ -1016,14 +1021,32 @@ void display(void)
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 
-		//pasto
+		/****************pasto y exterior******************/
 		glDisable(GL_LIGHTING);
 		glPushMatrix();
 			glTranslatef(-25,-20, 10);
-			figExterior.prismaRep(0.1,140.0,260.0,textPasto.GLindex);
+			figExterior.prismaRep(0.1,160.0,280.0,textPasto.GLindex);
+			//Barda Norte
+			glPushMatrix();
+				glTranslatef(0,5,-120);
+				glRotatef(90,0,1,0);
+				figExterior.prismaRep2(10, 2, 140, textBarda.GLindex);
+				//Barda este
+				glPushMatrix();
+					glTranslatef(-128,0,71);
+					glRotatef(90, 0, 1, 0);
+					figExterior.prismaRep2(10, 2, 258, textBarda.GLindex);
+				glPopMatrix();
+				//Barda oeste 1
+				glPushMatrix();
+					
+					glTranslatef(-69,5,-65.5);
+					figExterior.prismaRep2(10, 2, 110.9, textBarda.GLindex);
+				glPopMatrix();
+			glPopMatrix();
 		glPopMatrix();
 		
-		/*******************Cuarto 1********************/
+		/*******************Cuarto 1*********************/
 		//Piso
 		glPushMatrix();
 			glTranslatef(0,-20,0);
@@ -1034,15 +1057,15 @@ void display(void)
 				figPared.prisma(20, 40, 0.2, textBaul.GLindex);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(19.9, -10, 0);
+				glTranslatef(19.9, 10, 0);
 				figPared.prisma(20, 0.2, 50, textBaul.GLindex);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(-19.9, -10, 0);
+				glTranslatef(-19.9, 10, 0);
 				figPared.prisma(20, 0.2, 50, textBaul.GLindex);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(0, -10, -24.9);
+				glTranslatef(0, 10, -24.9);
 				figPared.prisma(20, 40, 0.2, textBaul.GLindex);
 			glPopMatrix();
 		glPopMatrix();	
@@ -1099,7 +1122,7 @@ void display(void)
 		/***************Cocina, comedor****************/
 		//Piso
 		glPushMatrix();
-			glTranslatef(-52.5,-20,-50);
+			glTranslatef(-58.5,-20,-50);
 			figSuelo.prisma(0.2,45,90, textBuro.GLindex);
 			//Paredes
 			glPushMatrix();
@@ -1118,11 +1141,16 @@ void display(void)
 				glTranslatef(0, 10, -44.9);
 				figPared.prisma(20, 45, 0.2, textEscritorio.GLindex);
 			glPopMatrix();
+			//Entrada principal
+			glPushMatrix();
+				glTranslatef(-7,0,60);
+				figSuelo.prisma(0.2,59,20,textEscritorioMadera.GLindex);
+			glPopMatrix();
 		glPopMatrix();
 		/********************Sala*********************/
 		//Piso
 		glPushMatrix();
-			glTranslatef(-52.5,-20,50);
+			glTranslatef(-58.5,-20,50);
 			figSuelo.prisma(0.2,45,50, textBuro.GLindex);
 			glPushMatrix();
 				glTranslatef(-22.4, 10, 0);
@@ -1142,69 +1170,60 @@ void display(void)
 			glPopMatrix();
 		glPopMatrix();
 
-
-
-
-
-		//Patio
+		/****************Patio trasero******************/
 		glPushMatrix();
 			glTranslatef(32.5, -20, 52.5);
 			figSuelo.prisma(0.2, 25, 55, textCobre.GLindex);
+			//limites
+			glPushMatrix();
+				glTranslatef(0,2.5,26.5);
+				figExterior.prisma(5,25,2,textCobija.GLindex);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(4.5,2.5,-26.5);
+				figExterior.prisma(5,16,2,textCobija.GLindex);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(11.5,2.5,0);
+				figExterior.prisma(5,2,55,textCobija.GLindex);
+			glPopMatrix();
 		glPopMatrix();
 
 		//Pasillo largo
 		glPushMatrix();
-			glTranslatef(-25,-20,20);
-			figSuelo.prisma(0.2,10,110, textCama.GLindex);
+			glTranslatef(-28,-20,20);
+			figSuelo.prisma(0.2,16,110, textCama.GLindex);
 			//paredes
 			glPushMatrix();
-				glTranslatef(4.9, 10, 0);
+				glTranslatef(7.9, 10, 0);
 				figPared.prisma(20, 0.2, 110, textGloboTer.GLindex);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(-4.9, 10, 0);
-				figPared.prisma(20, 0.2, 110, textGloboTer.GLindex);
-			glPopMatrix();
-			glPushMatrix();
-				glTranslatef(-4.9, 10, 0);
+				glTranslatef(-7.9, 10, 0);
 				figPared.prisma(20, 0.2, 110, textGloboTer.GLindex);
 			glPopMatrix();
 			glPushMatrix();
 				glTranslatef(0, 10, 54.9);
-				figPared.prisma(20, 10, 0.2, textGloboTer.GLindex);
+				figPared.prisma(20, 16, 0.2, textGloboTer.GLindex);
 			glPopMatrix();
 			glPushMatrix();
 				glTranslatef(0, 10, -54.9);
-				figPared.prisma(20, 10, 0.2, textGloboTer.GLindex);
+				figPared.prisma(20, 16, 0.2, textGloboTer.GLindex);
 			glPopMatrix();
 		glPopMatrix();
 		//Pasillo Corto
 		glPushMatrix();
 			glTranslatef(-2.5,-20,-30);
 			figSuelo.prisma(0.2,35,10, textBaulTapa.GLindex);
+			glPushMatrix();
+				glTranslatef(17.4,10,0);
+				figPared.prisma(20,0.2,10,0);
+			glPopMatrix();
 		glPopMatrix();
 			
 			
 			
 		glEnable(GL_LIGHTING);
-		/*//pasto
-		glPushMatrix();
-			glDisable(GL_LIGHTING);
-			glTranslatef(0, -20, 0);
-			figExterior.prismaRep(1.0, 60.0, 60.0, textPasto.GLindex);
-			glEnable(GL_LIGHTING);
-		glPopMatrix();
-		//cuarto
-		glPushMatrix();
-		//glScalef(1.0, 0.5, 1.0);
-			glTranslatef(-10, -10.5, 0);
-			glRotatef(180, 0, 1, 0);
-			glDisable(GL_LIGHTING);
-			glScalef(0.3, 0.3, 0.3);
-			cuarto();
-			glEnable(GL_LIGHTING);
-		glPopMatrix();
-		*/
 	glPopMatrix();
 	glutSwapBuffers();
 
