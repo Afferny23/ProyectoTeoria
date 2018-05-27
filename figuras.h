@@ -21,6 +21,7 @@ class CFiguras
 	void prisma(float altura, float largo, float profundidad, GLuint text, GLuint text2);
 	//Funcíon creacion prisma
 	void prismaRep(float altura, float largo, float profundidad, GLuint text);
+	void prismaRep3(float altura, float largo, float profundidad, GLuint text);
 	void prismaRep2(float altura, float largo, float profundidad, GLuint text);
 	//Funcíon creacion prisma
 	void prisma2(GLuint text, GLuint text2);
