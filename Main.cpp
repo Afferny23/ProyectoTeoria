@@ -2,6 +2,8 @@
 #include "figuras.h"
 #include "Camera.h"
 #include "cmodel/CModel.h"
+#include <Windows.h>
+#include <MMSystem.h>
 
 //Solo para Visual Studio 2015
 #if (_MSC_VER == 1900)
@@ -71,6 +73,12 @@ void interpolation(void)
 	KeyFrame[playIndex].incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
 }
 
+
+void Sonido() 
+{
+	PlaySound(TEXT("audio.wav"), NULL, SND_ASYNC);
+
+}
 void menuKeyFrame(int id)
 {
 	switch (id)
@@ -2404,6 +2412,10 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		}
 
 		break;
+	case 'P':
+	case 'p':
+		Sonido();
+		break;
 
 	case 'O':		//  
 	case 'o':
@@ -2414,6 +2426,7 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 	case 27:        // Cuando Esc es presionado...
 		exit(0);   // Salimos del programa
 		break;
+
 	default:        // Cualquier otra
 		break;
 	}
