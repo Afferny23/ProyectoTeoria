@@ -45,6 +45,14 @@ int w = 500, h = 500;
 int frame = 0, time, timebase = 0;
 char s[30];
 
+int mundo;
+DWORD dwFrames = 0;
+DWORD dwCurrentTime = 0;
+DWORD dwLastUpdateTime = 0;
+DWORD dwElapsedTime = 0;
+
+
+
 CCamera objCamera;	//Create objet Camera
 GLfloat g_lookupdown = 0.0f;    // Look Position In The Z-Axis (NEW) 
 int font = (int)GLUT_BITMAP_HELVETICA_18;
@@ -196,8 +204,9 @@ CTexture textParedNubes;
 CTexture textParedRosa;
 CTexture textParedCochera;
 CTexture textPisoCochera;
-
-
+CTexture textcarpa;
+CTexture textmetal;
+CTexture textred;
 /*********************Carga de Figuras*******************/
 CFiguras figSuelo;
 CFiguras figPared;
@@ -218,6 +227,8 @@ CFiguras figMesa;
 CFiguras figSilla;
 CFiguras figComedor;
 CFiguras figSala;
+CFiguras fig18;
+CFiguras fig19;
 /*********************Carga figuras 3D******************/
 
 /*********************Objetos*********************/
@@ -1856,6 +1867,82 @@ void pasilloLargo(void) {
 	glPopMatrix();
 }
 
+void carrusel(void)
+{
+	glTranslatef(16, 0, 26);
+	/*glPushMatrix();
+	glTranslatef(8, 0.1, 20);
+	glScalef(10, 0.1, 10);
+	glDisable(GL_LIGHTING);
+	fig18.prisma2(0, 0); //textura carrusel piso
+	glEnable(GL_LIGHTING);
+	glPopMatrix();*/
+
+	//techo
+
+
+	glPushMatrix();
+	glTranslatef(10, 6, 22);
+	glRotatef(mundo, 0, 1, 0);
+	fig18.cono(2, 7, 100, textcarpa.GLindex);
+	glPopMatrix();
+	//piso
+	glPushMatrix();
+	glTranslatef(10, 0.2, 22);
+	//glRotatef(180, 1, 0, 0);
+	glRotatef(mundo, 0, 1, 0);
+	fig19.cono(0.1, 7, 100, textmetal.GLindex);
+	glPopMatrix();
+
+	//postes 
+	glPushMatrix();
+	glTranslatef(10, 0.1, 22);
+	//glRotatef(180, 1, 0, 0);
+	fig18.cilindro(0.3, 6, 100, textred.GLindex);
+	//sillacarrusel();
+	glRotatef(mundo, 0, 1, 0);
+
+	glTranslatef(4, 0.1, -5);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(-5, 0.1, -1);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(-3, 0, 1);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(-2, 0, 4);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(1, 0, 5);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(3, 0, 2);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(4, 0, 0);
+	fig18.cilindro(0.1, 6, 100, 0);
+	glTranslatef(4, 0, -4);
+	fig18.cilindro(0.1, 6, 100, 0);
+
+
+	glPopMatrix();
+
+}
+
+void sillacarrusel(void) {
+
+	glPushMatrix();
+	glTranslatef(0, .015, 0);
+	glScalef(1, .01, 1);
+	fig19.prisma2(0, 0);
+
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, 0, -.4);
+	glRotatef(90, 1, 0, 0);
+	glScalef(1, .01, .07);
+	fig19.prisma2(0, 0);
+	glPopMatrix();
+
+
+
+}
+
 void cochera(void) {
 	//Piso
 	glPushMatrix();
@@ -1927,7 +2014,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	textCielo.BuildGLTexture();
 	textCielo.ReleaseImage();
 
-	textPasto.LoadTGA("Texturas/exterior/grass.tga");
+	textPasto.LoadTGA("Texturas/exterior/verde.tga");
 	textPasto.BuildGLTexture();
 	textPasto.ReleaseImage();
 
@@ -2224,7 +2311,19 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	textParedCochera.BuildGLTexture();
 	textParedCochera.ReleaseImage();
 	
-	
+	textcarpa.LoadTGA("carpa.tga");
+	textcarpa.BuildGLTexture();
+	textcarpa.ReleaseImage();
+
+	textmetal.LoadTGA("metal.tga");
+	textmetal.BuildGLTexture();
+	textmetal.ReleaseImage();
+
+	textred.LoadTGA("red.tga");
+	textred.BuildGLTexture();
+	textred.ReleaseImage();
+
+
 
 	objCamera.Position_Camera(0, 2.5f, 3, 0, 2.5f, 0, 0, 1, 0);
 	//NEW Iniciar variables de KeyFrames
@@ -2339,6 +2438,14 @@ void display(void)
 			glTranslatef(9, -20, 130);
 			cochera();
 		glPopMatrix();
+		//Carrusel
+		glPushMatrix();
+		glTranslatef(-120, -20, -220);
+		glScalef(2.5,2.5,2.5);
+		sillacarrusel();
+		carrusel();
+		glPopMatrix();
+
 
 		//baño niños
 		glPushMatrix();
@@ -2346,6 +2453,7 @@ void display(void)
 			banoNinos();
 		glPopMatrix();
 
+		//carrusel();
 		
 		/*****************Pasillo Corto******************/
 		glPushMatrix();
@@ -2356,28 +2464,41 @@ void display(void)
 				figPared.prisma(20,0.2,10,textFachada.GLindex);
 			glPopMatrix();
 		glPopMatrix();	
-			
+
 		//Cuarto 1
 		glPushMatrix();
 			glTranslatef(0, -20, 50);
 			cuartoNinos();
 		glPopMatrix();
 
-			
+	
 		glEnable(GL_LIGHTING);
 	glPopMatrix();
+	
 	glutSwapBuffers();
 
 } //pendiente
 
 void animacion()
 {
+	dwCurrentTime = GetTickCount();
+	dwElapsedTime = dwCurrentTime - dwLastUpdateTime;
 	if (g_fanimacion)
 	{
 		//Globo terraqueo
 		giroGloboTerraqueo += 1.0;		
 
 	}
+
+	if (dwElapsedTime >= 30)
+	{
+		mundo = (mundo - 10) % 360;
+		dwLastUpdateTime = dwCurrentTime;
+
+
+
+	}
+
 	glutPostRedisplay();
 }
 
